@@ -1,4 +1,4 @@
-# user_profile_management
+# User_Profile_Management
 
 User profile management project
 
