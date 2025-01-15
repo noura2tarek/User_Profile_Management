@@ -26,7 +26,16 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _addUser(User user) async {}
+  void _addUser(User user) async {
+    try {
+      await _api.addUser(user.toJson());
+      setState(() {
+        _users.add(user);
+      });
+    } catch (e) {
+      print('Failed to add user: $e');
+    }
+  }
 
   void _navigateToAddOrUpdateUserScreen({User? user}) async {
     final formResult = await Navigator.push(

@@ -6,4 +6,8 @@ class ApiService {
   Future<Response> updateUser(int id, Map<String, dynamic> data) async {
     return await _dio.put('/users/$id', data: data);
   }
+
+  Future<Response> addUser(Map<String, dynamic> data) async {
+    return _dio.post('/users', data: data);
+  }
 }
