@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: ProfileScreen(user: User(id: 123, name: 'John Doe', username: 'johndoe', email: 'john.doe@example.com', phone: '1234567890', website: 'www.example.com', address: Address(street: 'street', suite: 'suite', city: 'city', zipcode: 'zipcode', geo: Geo(lat: '2', lng: '3')), company: Company(name: 'name', catchPhrase: 'catchPhrase', bs: 'bs')),),
+      home: ProfileScreen(user: User(id: 123, name: 'John Doe', username: 'johndoe', email: 'john.doe@example.com', phone: '1234567890', website: 'https://www.example.com', address: Address(street: 'street', suite: 'suite', city: 'city', zipcode: 'zipcode', geo: Geo(lat: '2', lng: '3')), company: Company(name: 'name', catchPhrase: 'catchPhrase', bs: 'bs')),),
     );
   }
 }

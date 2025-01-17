@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:user_profile_management/controller/profile_methods.dart';
 import 'package:user_profile_management/model/user_model.dart';
 import 'package:user_profile_management/view/widgets/person_info_title.dart';
 
@@ -13,6 +14,7 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("User Profile"),
       ),
+
       body: SafeArea(
         minimum: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         child: SingleChildScrollView(
@@ -35,25 +37,19 @@ class ProfileScreen extends StatelessWidget {
                 title: 'email',
                 subtitle: user.email,
                 iconData: Icons.mail,
-                onTap: () {
-                  print('email');
-                },
+                onTap: ()=> ProfileMethods.launchEmail(email: user.email, context: context),
               ),
               PersonInfoTitle(
                 title: 'Phone',
                 subtitle: user.phone,
                 iconData: Icons.phone,
-                onTap: () {
-                  print('phone');
-                },
+                onTap: ()=> ProfileMethods.callUserPhone(phoneNumber: user.phone, context: context)
               ),
               PersonInfoTitle(
                 title: 'Website',
                 subtitle: user.website,
                 iconData: Icons.language,
-                onTap: () {
-                  print('website');
-                },
+                onTap: ()=> ProfileMethods.launchWebsite(websiteLink: user.website, context: context),
               ),
             ],
           ),
