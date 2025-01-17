@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:user_profile_management/controller/api_service.dart';
+import 'package:user_profile_management/controller/user_service.dart';
 import 'package:user_profile_management/model/user_model.dart';
 import 'package:user_profile_management/view/screens/edit_user/edit_user_screen.dart';
 
@@ -11,29 +11,27 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final ApiService _api = ApiService();
+  final UserController _userController = UserController();
   List<User> _users = [];
+  bool _isLoading = true;
 
-  void _updateUser(User user) async {
-    try {
-      await _api.updateUser(user.id, user.toJson());
-      setState(() {
-        final index = _users.indexWhere((u) => u.id == user.id);
-        _users[index] = user;
-      });
-    } catch (e) {
-      print('Failed to update user: $e');
-    }
+  @override
+  void initState() {
+    super.initState();
+    _fetchUsers();
   }
 
-  void _addUser(User user) async {
+  Future<void> _fetchUsers() async {
+    setState(() => _isLoading = true);
     try {
-      await _api.addUser(user.toJson());
-      setState(() {
-        _users.add(user);
-      });
+      final users = await _userController.fetchUsers();
+      setState(() => _users = users);
     } catch (e) {
-      print('Failed to add user: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to fetch users: $e')),
+      );
+    } finally {
+      setState(() => _isLoading = false);
     }
   }
 
@@ -41,28 +39,81 @@ class _HomeScreenState extends State<HomeScreen> {
     final formResult = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AddOrUpdateUserScreen(
-          user: user,
-        ),
+        builder: (context) => AddOrUpdateUserScreen(user: user),
       ),
     );
 
     if (formResult != null && formResult is Map<String, dynamic>) {
       if (formResult['action'] == 'add') {
-        _addUser(formResult['user']);
+        await _userController.addUser(formResult['user']);
       } else if (formResult['action'] == 'edit') {
-        _updateUser(formResult['user']);
+        await _userController.updateUser(formResult['user']);
       }
+      _fetchUsers();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title:
+            const Text('User Profiles', style: TextStyle(color: Colors.white)),
+        centerTitle: true,
+        backgroundColor: Colors.blue,
+        elevation: 0,
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _navigateToAddOrUpdateUserScreen(),
-        child: Icon(Icons.add),
+        backgroundColor: const Color.fromARGB(255, 125, 187, 238),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : RefreshIndicator(
+              onRefresh: _fetchUsers,
+              child: ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: _users.length,
+                itemBuilder: (context, index) {
+                  final user = _users[index];
+                  return Card(
+                    elevation: 4,
+                    margin: const EdgeInsets.only(bottom: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(16),
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.blue.shade100,
+                        child: Text(
+                          user.name[0],
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                      title: Text(
+                        user.name,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(user.email),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.edit, color: Colors.blue),
+                        onPressed: () =>
+                            _navigateToAddOrUpdateUserScreen(user: user),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
     );
   }
 }
