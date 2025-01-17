@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 class ApiService {
-  static const String url = 'https://jsonplaceholder.typicode.com/users';
+  static const String url = 'https://jsonplaceholder.typicode.com/';
   final Dio _dio = Dio(BaseOptions(baseUrl: url));
   Future<Response> updateUser(int id, Map<String, dynamic> data) async {
     return await _dio.put('/users/$id', data: data);
