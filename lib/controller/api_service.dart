@@ -55,18 +55,18 @@ class ApiService {
             log('error: 404 - Not found');
             // Cancels the currently visible toast, if any
             Fluttertoast.cancel();
-            _showToast(
+            showToast(
               message: e.response?.data['message'],
-              color: _chooseToastColor(ToastStates.ERROR),
+              color: chooseToastColor(ToastStates.ERROR),
             );
             break;
           case 401:
             log('error: 401 - Unauthorized');
             // Cancels the currently visible toast, if any
             Fluttertoast.cancel();
-            _showToast(
+            showToast(
               message: e.response?.data['message'],
-              color: _chooseToastColor(ToastStates.ERROR),
+              color: chooseToastColor(ToastStates.ERROR),
             );
             break;
           default:
@@ -77,49 +77,48 @@ class ApiService {
         log('error: Please check your internet connection.');
         // Cancels the currently visible toast, if any
         Fluttertoast.cancel();
-        _showToast(
+        showToast(
           message: 'No internet connection, check your internet and try again',
-          color: _chooseToastColor(ToastStates.NOTIFY),
+          color: chooseToastColor(ToastStates.NOTIFY),
         );
       }
     }
     return users;
   }
+}
+///////////////////// End of Class /////////////////////////
 
-  /*---------------- Show Toast Method ---------------*/
-  Future<bool?> _showToast(
-      {required String message, Color color = Colors.red}) {
-    return Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: color,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
-  }
-
-  // Choose toast color
-  Color _chooseToastColor(ToastStates state) {
-    Color color = Colors.red;
-    switch (state) {
-      case ToastStates.SUCCESS:
-        color = Colors.green;
-        break;
-      case ToastStates.WARNING:
-        color = Colors.yellow;
-        break;
-      case ToastStates.ERROR:
-        color = Colors.red;
-        break;
-      case ToastStates.NOTIFY:
-        color = Colors.grey;
-        break;
-    }
-    return color;
-  }
+/*---------------- Show Toast Method ---------------*/
+Future<bool?> showToast({required String message, Color color = Colors.red}) {
+  return Fluttertoast.showToast(
+    msg: message,
+    toastLength: Toast.LENGTH_LONG,
+    gravity: ToastGravity.BOTTOM,
+    timeInSecForIosWeb: 1,
+    backgroundColor: color,
+    textColor: Colors.white,
+    fontSize: 16.0,
+  );
 }
 
-///////////////////// End of Class /////////////////////////
+// Choose toast color
+Color chooseToastColor(ToastStates state) {
+  Color color = Colors.red;
+  switch (state) {
+    case ToastStates.SUCCESS:
+      color = Colors.green;
+      break;
+    case ToastStates.WARNING:
+      color = Colors.yellow;
+      break;
+    case ToastStates.ERROR:
+      color = Colors.red;
+      break;
+    case ToastStates.NOTIFY:
+      color = Colors.grey;
+      break;
+  }
+  return color;
+}
+
 enum ToastStates { SUCCESS, WARNING, NOTIFY, ERROR }
