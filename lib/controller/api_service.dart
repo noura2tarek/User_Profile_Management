@@ -1,13 +1,13 @@
-
+import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:user_profile_management/model/user_model.dart';
 
 class ApiService {
   final Dio _dio = Dio();
-
 
   // End point url
   String url = 'https://jsonplaceholder.typicode.com/users';
@@ -29,7 +29,6 @@ class ApiService {
     return await _dio.delete('$url/$id');
   }
 
-
   /*-------------- Get User Data Method ------------*/
   Future<List<User>> getUsersData() async {
     List<User> users = [];
@@ -37,6 +36,10 @@ class ApiService {
       var response = await _dio.get(url);
       var data = response.data;
       if (response.statusCode == 200) {
+        var cachedData = jsonEncode(data); //cconvert json to string
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString(
+            'usersData', cachedData); //store data in shared preferences
         // Convert json data to list of user model
         data.forEach((user) {
           users.add(User.fromJson(user));

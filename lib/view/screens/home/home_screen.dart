@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:user_profile_management/view/screens/edit_user/edit_user_screen.dart';
 import 'package:user_profile_management/controller/api_service.dart';
 import 'package:user_profile_management/model/user_model.dart';
@@ -16,12 +19,42 @@ class _HomeScreenState extends State<HomeScreen> {
   List<User> users = [];
   bool isLoading = true;
 
+  Future<List<User>> getUsersDataFromCache() async {
+    //try to load data from shared prefrence
+    List<User> cachedUsers = [];
+    final prefs = await SharedPreferences.getInstance();
+    String data = prefs.getString('usersData') ?? '';
+    if (data.isEmpty) {
+      //data hasn't been saved in shared prefrences yet
+      return cachedUsers;
+    } else {
+      var jsonData = jsonDecode(data); //convert string to json
+      jsonData.forEach((item) {
+        cachedUsers.add(User.fromJson(item));
+      });
+      return cachedUsers;
+    }
+  }
+
   /*----------Get Users Data from API ----------*/
   Future<void> getData() async {
-    users = await ApiService().getUsersData();
     setState(() {
-      isLoading = false;
+      isLoading = true;
     });
+    List<User> cachedUsers = await getUsersDataFromCache();
+    if (cachedUsers.isNotEmpty) {
+      // If data found in shared prefrences
+      setState(() {
+        users = cachedUsers;
+        isLoading = false;
+      });
+    } else {
+      List<User> apiUsers = await ApiService().getUsersData();
+      setState(() {
+        users = apiUsers;
+        isLoading = false;
+      });
+    }
   }
 
   @override
