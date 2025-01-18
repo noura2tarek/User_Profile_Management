@@ -162,7 +162,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ApiService().deleteUser(user.id);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text("${users[index].name} deleted"),
+                            content: Text(
+                                "User with name ${users[index].name} deleted Successfully!"),
                           ),
                         );
                         setState(() {
@@ -198,6 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             _navigateToAddOrUpdateUserScreen(user: user);
                           },
                           onTab: () {
+                            // Navigate to user profile
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => ProfileScreen(
@@ -213,6 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          // Add user method
           _navigateToAddOrUpdateUserScreen();
         },
         child: Icon(Icons.add),

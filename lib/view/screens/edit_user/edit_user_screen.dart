@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:user_profile_management/model/user_model.dart';
+import 'package:user_profile_management/view/widgets/custom_button.dart';
 import 'package:user_profile_management/view/widgets/custom_form_field.dart';
 
 class AddOrUpdateUserScreen extends StatefulWidget {
@@ -174,25 +175,9 @@ class _AddOrUpdateUserScreenState extends State<AddOrUpdateUserScreen> {
                 ),
                 const SizedBox(height: 20),
                 //---- Update or Add Button ----//
-                ElevatedButton(
-                  onPressed: _saveForm,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 32, vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    elevation: 5,
-                  ),
-                  child: Text(
-                    widget.user == null ? 'Add User' : 'Update User',
-                    style: const TextStyle(
-                      color: Colors.deepPurple,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                CustomButton(
+                  saveFunction: _saveForm,
+                  user: widget.user,
                 ),
                 const SizedBox(height: 20),
               ],
