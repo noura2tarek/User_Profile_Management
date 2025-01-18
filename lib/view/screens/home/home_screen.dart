@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:user_profile_management/controller/api_service.dart';
 import 'package:user_profile_management/model/user_model.dart';
+import 'package:user_profile_management/view/widgets/custom_list_tile.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,23 +15,11 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = true;
 
   Future<void> getData() async {
-    try {
-      List<User> fetchedUsers = await ApiService().getUsersData();
-      setState(() {
-        users = fetchedUsers;
-        isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to fetch the data: $e'),
-        ),
-      );
-    }
-  }
+  users = await ApiService().getUsersData();
+  setState(() {
+    isLoading = false;
+  });
+}
 
   @override
   void initState() {
@@ -76,30 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: const Icon(Icons.delete, color: Colors.white),
                       ),
                       child: Card(
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            child: Text(
-                              user.name[0],
-                              style: TextStyle(
-                                color: myColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          title: Text(user.name),
-                          subtitle: Text(user.email),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.edit, color: myColor),
-                                onPressed: () {
-                                  //
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
+                        child: customListTile(user: user, myColor: myColor),
                       ),
                     );
                   },
