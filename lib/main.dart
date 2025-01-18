@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:user_profile_management/view/screens/profile/profile_screen.dart';
-
-import 'model/user_model.dart';
+import 'package:user_profile_management/view/screens/home/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +17,6 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-
       home: HomeScreen(),
     );
   }

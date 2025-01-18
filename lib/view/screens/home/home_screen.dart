@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:user_profile_management/view/screens/edit_user/edit_user_screen.dart';
 import 'package:user_profile_management/controller/api_service.dart';
 import 'package:user_profile_management/model/user_model.dart';
+import 'package:user_profile_management/view/screens/profile/profile_screen.dart';
 import 'package:user_profile_management/view/widgets/custom_list_tile.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -142,7 +143,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             _navigateToAddOrUpdateUserScreen(user: user);
                           },
                           onTab: () {
-                            // Go to profile screen
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ProfileScreen(
+                                  user: user,
+                                ),
+                              ),
+                            );
                           },
                         ),
                       ),
