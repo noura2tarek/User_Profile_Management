@@ -33,7 +33,7 @@ A Flutter application for managing user profiles. This app allows you to:
    - Input fields are validated for proper formatting.
 
 7.  **Url Launcher**:
-   url launcher added for email and phone in profile screen.
+   - url launcher added for email and phone in profile screen.
 
 ## **Backges Used**
 - **Dio**: For making HTTP requests to the API.
