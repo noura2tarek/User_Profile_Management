@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -31,17 +29,14 @@ abstract class ProfileMethods {
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
       path: email,
-      queryParameters: {
-        'subject': subject,
-        'body': body,
-      },
+      query: 'subject=$subject&body=$body',
     );
 
     final url = emailLaunchUri.toString();
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));
     } else {
-      log('Could not launch $url');
+      //log('Could not launch $url');
       showSnackBar(context: context, text: "Can't launch email");
     }
   }

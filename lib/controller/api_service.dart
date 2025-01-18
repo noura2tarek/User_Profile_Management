@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
@@ -10,9 +9,9 @@ import 'package:user_profile_management/model/user_model.dart';
 class ApiService {
   final Dio _dio = Dio();
 
-
   // End point url
   String url = 'https://jsonplaceholder.typicode.com/users';
+
   /*-------------- Add User Data Method ------------*/
 
   Future<Response> addUser(Map<String, dynamic> data) async {
@@ -31,7 +30,6 @@ class ApiService {
     return await _dio.delete('$url/$id');
   }
 
-
   /*-------------- Get User Data Method ------------*/
   Future<List<User>> getUsersData() async {
     List<User> users = [];
@@ -48,8 +46,6 @@ class ApiService {
         data.forEach((user) {
           users.add(User.fromJson(user));
         });
-        // print(data);
-        // print(users.length);
       }
     } on DioException catch (e) {
       // HANDLE ERRORS

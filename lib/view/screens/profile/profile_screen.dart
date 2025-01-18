@@ -44,17 +44,16 @@ class ProfileScreen extends StatelessWidget {
                     email: user.email, context: context),
               ),
               PersonInfoTitle(
-                  title: 'Phone',
-                  subtitle: user.phone,
-                  iconData: Icons.phone,
-                  onTap: () => ProfileMethods.callUserPhone(
-                      phoneNumber: user.phone, context: context)),
+                title: 'Phone',
+                subtitle: user.phone,
+                iconData: Icons.phone,
+                onTap: () => ProfileMethods.callUserPhone(
+                    phoneNumber: user.phone, context: context),
+              ),
               PersonInfoTitle(
                 title: 'Website',
                 subtitle: user.website,
                 iconData: Icons.language,
-                onTap: () => ProfileMethods.launchWebsite(
-                    websiteLink: user.website, context: context),
               ),
             ],
           ),
