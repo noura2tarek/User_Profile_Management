@@ -1,34 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:user_profile_management/model/user_model.dart';
 
-class customListTile extends StatelessWidget {
-  const customListTile({
+class CustomListTile extends StatelessWidget {
+  const CustomListTile({
     super.key,
     required this.user,
-    required this.myColor,
+    required this.color,
+    this.onTabEdit,
+    this.onTab,
   });
 
   final User user;
-  final Color myColor;
+  final Color color;
+  final void Function()? onTabEdit;
+  final void Function()? onTab;
 
   @override
   Widget build(BuildContext context) {
-  const Color myColor = Color.fromARGB(255, 152, 70, 155);
     return ListTile(
+      onTap: onTab,
       leading: CircleAvatar(
         child: Text(
           user.name[0],
           style: TextStyle(
-            color: myColor,
+            color: color,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
       title: Text(user.name),
       subtitle: Text(user.email),
-      trailing: IconButton(icon: const Icon(Icons.edit, color: myColor),
-            onPressed: () {},
-          ),
+      trailing: IconButton(
+        icon: Icon(Icons.edit, color: color),
+        onPressed: onTabEdit,
+      ),
     );
   }
 }

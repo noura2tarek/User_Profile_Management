@@ -7,7 +7,7 @@ import 'package:user_profile_management/model/user_model.dart';
 class ApiService {
   final Dio _dio = Dio();
 
-  // end point url
+  // End point url
   String url = 'https://jsonplaceholder.typicode.com/users';
 
   /*-------------- Get User Data Method ------------*/
@@ -17,6 +17,7 @@ class ApiService {
       var response = await _dio.get(url);
       var data = response.data;
       if (response.statusCode == 200) {
+        // Convert json data to list of user model
         data.forEach((user) {
           users.add(User.fromJson(user));
         });
@@ -63,7 +64,8 @@ class ApiService {
   }
 
   /*---------------- Show Toast Method ---------------*/
-  Future<bool?> _showToast({required String message, Color color = Colors.red}) {
+  Future<bool?> _showToast(
+      {required String message, Color color = Colors.red}) {
     return Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_LONG,
