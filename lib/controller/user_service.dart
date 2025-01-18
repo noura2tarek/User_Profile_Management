@@ -1,33 +1,52 @@
-import 'package:user_profile_management/model/user_model.dart';
 import 'package:user_profile_management/controller/api_service.dart';
+import 'package:user_profile_management/model/user_model.dart';
 
 class UserController {
-  final ApiService _api = ApiService();
+  final ApiService _apiService = ApiService();
+  List<User> _users = [];
+  bool _loading = true;
+
+  List<User> get users => _users;
+  bool get loading => _loading;
+
+  Future<void> fetchUsers() async {
+    _loading = true;
+    try {
+      final response = await _apiService.fetchUsers();
+      _users =
+          (response.data as List).map((json) => User.fromJson(json)).toList();
+    } catch (e) {
+      print('Error fetching users: $e');
+    } finally {
+      _loading = false;
+    }
+  }
 
   Future<void> addUser(User user) async {
     try {
-      await _api.addUser(user.toJson());
+      await _apiService.addUser(user.toJson());
+      _users.add(user);
     } catch (e) {
-      throw Exception('Failed to add user: $e');
+      print('Failed to add user: $e');
     }
   }
 
   Future<void> updateUser(User user) async {
     try {
-      await _api.updateUser(user.id, user.toJson());
+      await _apiService.updateUser(user.id, user.toJson());
+      final index = _users.indexWhere((u) => u.id == user.id);
+      _users[index] = user;
     } catch (e) {
-      throw Exception('Failed to update user: $e');
+      print('Failed to update user: $e');
     }
   }
 
-  Future<List<User>> fetchUsers() async {
+  Future<void> deleteUser(int id) async {
     try {
-      final response = await _api.fetchUsers();
-      return (response.data as List)
-          .map((user) => User.fromJson(user))
-          .toList();
+      await _apiService.deleteUser(id);
+      _users.removeWhere((user) => user.id == id);
     } catch (e) {
-      throw Exception('Failed to fetch users: $e');
+      print('Failed to delete user: $e');
     }
   }
 }

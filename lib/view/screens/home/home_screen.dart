@@ -3,43 +3,31 @@ import 'package:user_profile_management/controller/user_service.dart';
 import 'package:user_profile_management/model/user_model.dart';
 import 'package:user_profile_management/view/screens/edit_user/edit_user_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class UserScreen extends StatefulWidget {
+  const UserScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<UserScreen> createState() => _UserScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _UserScreenState extends State<UserScreen> {
   final UserController _userController = UserController();
-  List<User> _users = [];
-  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _fetchUsers();
-  }
-
-  Future<void> _fetchUsers() async {
-    setState(() => _isLoading = true);
-    try {
-      final users = await _userController.fetchUsers();
-      setState(() => _users = users);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to fetch users: $e')),
-      );
-    } finally {
-      setState(() => _isLoading = false);
-    }
+    _userController.fetchUsers().then((_) {
+      setState(() {});
+    });
   }
 
   void _navigateToAddOrUpdateUserScreen({User? user}) async {
     final formResult = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AddOrUpdateUserScreen(user: user),
+        builder: (context) => AddOrUpdateUserScreen(
+          user: user,
+        ),
       ),
     );
 
@@ -49,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
       } else if (formResult['action'] == 'edit') {
         await _userController.updateUser(formResult['user']);
       }
-      _fetchUsers();
+      setState(() {});
     }
   }
 
@@ -57,63 +45,46 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-            const Text('User Profiles', style: TextStyle(color: Colors.white)),
+        title: const Text('Users'),
         centerTitle: true,
         backgroundColor: Colors.blue,
-        elevation: 0,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _navigateToAddOrUpdateUserScreen(),
-        backgroundColor: const Color.fromARGB(255, 125, 187, 238),
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
-              onRefresh: _fetchUsers,
-              child: ListView.builder(
-                padding: const EdgeInsets.all(16),
-                itemCount: _users.length,
-                itemBuilder: (context, index) {
-                  final user = _users[index];
-                  return Card(
-                    elevation: 4,
-                    margin: const EdgeInsets.only(bottom: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(16),
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.blue.shade100,
-                        child: Text(
-                          user.name[0],
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ),
-                      title: Text(
-                        user.name,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      subtitle: Text(user.email),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.edit, color: Colors.blue),
+      body: _userController.loading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView.builder(
+              itemCount: _userController.users.length,
+              itemBuilder: (BuildContext context, int index) {
+                final user = _userController.users[index];
+                return ListTile(
+                  leading: const Icon(Icons.person),
+                  title: Text(user.name),
+                  subtitle: Text(user.email),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
                         onPressed: () =>
                             _navigateToAddOrUpdateUserScreen(user: user),
+                        icon: const Icon(Icons.edit),
                       ),
-                    ),
-                  );
-                },
-              ),
+                      IconButton(
+                        onPressed: () async {
+                          await _userController.deleteUser(user.id);
+                          setState(() {});
+                        },
+                        icon: const Icon(Icons.delete),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _navigateToAddOrUpdateUserScreen(),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
