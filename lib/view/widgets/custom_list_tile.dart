@@ -8,17 +8,20 @@ class CustomListTile extends StatelessWidget {
     required this.color,
     this.onTabEdit,
     this.onTab,
+    this.onLongPress,
   });
 
   final User user;
   final Color color;
   final void Function()? onTabEdit;
   final void Function()? onTab;
+  final void Function()? onLongPress;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTab,
+      onLongPress: onLongPress,
       leading: CircleAvatar(
         child: Text(
           user.name[0],

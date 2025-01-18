@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:user_profile_management/view/screens/edit_user/edit_user_screen.dart';
@@ -62,7 +61,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-
   /*---------- Add User method ----------*/
   void _addUser(User user) async {
     try {
@@ -101,10 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           padding: EdgeInsets.only(
-            bottom: MediaQuery
-                .of(context)
-                .viewInsets
-                .bottom,
+            bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
           child: AddOrUpdateUserScreen(user: user),
         );
@@ -114,8 +109,18 @@ class _HomeScreenState extends State<HomeScreen> {
     if (formResult != null && formResult is Map<String, dynamic>) {
       if (formResult['action'] == 'add') {
         _addUser(formResult['user']);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("User Added successfully!"),
+          ),
+        );
       } else if (formResult['action'] == 'edit') {
         _updateUser(formResult['user']);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("User Updated successfully!"),
+          ),
+        );
       }
       setState(() {});
     }
@@ -140,68 +145,72 @@ class _HomeScreenState extends State<HomeScreen> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : users.isEmpty
-          ? const Center(child: Text("No users available"))
-          : ListView.builder(
-        itemCount: users.length,
-        itemBuilder: (BuildContext context, int index) {
-          final user = users[index];
-          return Dismissible(
-            key: ValueKey(user.id),
-            direction: DismissDirection.endToStart,
-            confirmDismiss: (direction) async {
-              // Show dialog for confirmation
-              return await buildShowDialog(context);
-            },
-            onDismissed: (direction) {
-              // Confirm Delete user method
-              ApiService().deleteUser(user.id);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("${users[index].name} deleted"),
-                ),
-              );
-              setState(() {
-                users.removeAt(index);
-              });
-            },
-            // Delete Icon UI
-            background: Container(
-              color: const Color.fromARGB(183, 241, 37, 22),
-              alignment: Alignment.centerRight,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.delete, color: Colors.white),
-                  const Text(
-                    'Delete',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-            child: Card(
-              child: CustomListTile(
-                user: user,
-                color: myColor,
-                onTabEdit: () {
-                  _navigateToAddOrUpdateUserScreen(user: user);
-                },
-                onTab: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ProfileScreen(
-                            user: user,
+              ? const Center(child: Text("No users available"))
+              : ListView.builder(
+                  itemCount: users.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final user = users[index];
+                    return Dismissible(
+                      key: ValueKey(user.id),
+                      direction: DismissDirection.endToStart,
+                      confirmDismiss: (direction) async {
+                        // Show dialog for confirmation
+                        return await buildShowDialog(context);
+                      },
+                      onDismissed: (direction) {
+                        // Confirm Delete user method
+                        ApiService().deleteUser(user.id);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("${users[index].name} deleted"),
                           ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          );
-        },
-      ),
+                        );
+                        setState(() {
+                          users.removeAt(index);
+                        });
+                      },
+                      // Delete Icon UI
+                      background: Container(
+                        color: const Color.fromARGB(183, 241, 37, 22),
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.delete, color: Colors.white),
+                            const Text(
+                              'Delete',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                      child: Card(
+                        child: CustomListTile(
+                          user: user,
+                          color: myColor,
+                          onTabEdit: () {
+                            // Edit user from edit icon
+                            _navigateToAddOrUpdateUserScreen(user: user);
+                          },
+                          onLongPress: () {
+                            // Or edit user by long press
+                            _navigateToAddOrUpdateUserScreen(user: user);
+                          },
+                          onTab: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ProfileScreen(
+                                  user: user,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _navigateToAddOrUpdateUserScreen();
@@ -238,7 +247,4 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
-
 }
-
-

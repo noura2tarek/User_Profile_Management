@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:user_profile_management/model/user_model.dart';
+import 'package:user_profile_management/view/widgets/custom_form_field.dart';
 
 class AddOrUpdateUserScreen extends StatefulWidget {
   final User? user;
+
   const AddOrUpdateUserScreen({super.key, this.user});
 
   @override
@@ -73,170 +75,128 @@ class _AddOrUpdateUserScreenState extends State<AddOrUpdateUserScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.purpleAccent,
-            Colors.deepPurpleAccent,
-            Colors.deepPurpleAccent
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-        left: 16,
-        right: 16,
-        top: 16,
-      ),
-      child: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                widget.user == null ? 'Add User' : 'Edit User',
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                initialValue: _name,
-                decoration: InputDecoration(
-                  labelText: 'Name',
-                  labelStyle: const TextStyle(color: Colors.white),
-                  prefixIcon: const Icon(Icons.person, color: Colors.white),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.white.withValues(alpha: 0.2),
-                ),
-                style: const TextStyle(color: Colors.white),
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter a name' : null,
-                onSaved: (value) => _name = value!,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                initialValue: _username,
-                decoration: InputDecoration(
-                  labelText: 'Username',
-                  labelStyle: const TextStyle(color: Colors.white),
-                  prefixIcon:
-                      const Icon(Icons.person_outline, color: Colors.white),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.white.withValues(alpha: 0.2),
-                ),
-                style: const TextStyle(color: Colors.white),
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter a username' : null,
-                onSaved: (value) => _username = value!,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                initialValue: _email,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  labelStyle: const TextStyle(color: Colors.white),
-                  prefixIcon: const Icon(Icons.email, color: Colors.white),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.white.withValues(alpha: .2),
-                ),
-                style: const TextStyle(color: Colors.white),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter an email';
-                  }
-                  if (!_validateEmail(value)) {
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                },
-                onSaved: (value) => _email = value!,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                initialValue: _phone,
-                decoration: InputDecoration(
-                  labelText: 'Phone',
-                  labelStyle: const TextStyle(color: Colors.white),
-                  prefixIcon: const Icon(Icons.phone, color: Colors.white),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.white.withValues(alpha: .2),
-                ),
-                style: const TextStyle(color: Colors.white),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter a phone number';
-                  }
-                  if (!_validatePhone(value)) {
-                    return 'Please enter a valid 11-digit phone number';
-                  }
-                  return null;
-                },
-                onSaved: (value) => _phone = value!,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                initialValue: _website,
-                decoration: InputDecoration(
-                  labelText: 'Website',
-                  labelStyle: const TextStyle(color: Colors.white),
-                  prefixIcon: const Icon(Icons.web, color: Colors.white),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.white.withValues(alpha: .2),
-                ),
-                style: const TextStyle(color: Colors.white),
-                onSaved: (value) => _website = value!,
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _saveForm,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  elevation: 5,
-                ),
-                child: Text(
-                  widget.user == null ? 'Add User' : 'Update User',
+    return SingleChildScrollView(
+      physics: NeverScrollableScrollPhysics(),
+      child: SafeArea(
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.purpleAccent,
+                Colors.deepPurpleAccent,
+                Colors.deepPurpleAccent
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            left: 16,
+            right: 16,
+            top: 16,
+          ),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  widget.user == null ? 'Add User' : 'Edit User',
                   style: const TextStyle(
-                    color: Colors.deepPurple,
-                    fontSize: 16,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-            ],
+                const SizedBox(height: 20),
+                //---- Name form field ----//
+                CustomFormField(
+                  initialValue: _name,
+                  labelName: 'Name',
+                  prefixIcon: Icons.person,
+                  validator: (value) =>
+                      value!.isEmpty ? 'Please enter a name' : null,
+                  onSaved: (value) => _name = value!,
+                ),
+                const SizedBox(height: 16),
+                //---- User name form field ----//
+                CustomFormField(
+                  initialValue: _username,
+                  labelName: 'Username',
+                  prefixIcon: Icons.person_outline,
+                  validator: (value) =>
+                      value!.isEmpty ? 'Please enter a username' : null,
+                  onSaved: (value) => _username = value!,
+                ),
+                const SizedBox(height: 16),
+                //---- Email form field ----//
+                CustomFormField(
+                  initialValue: _email,
+                  labelName: 'Email',
+                  prefixIcon: Icons.email,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter an email';
+                    }
+                    if (!_validateEmail(value)) {
+                      return 'Please enter a valid email';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => _email = value!,
+                ),
+                const SizedBox(height: 16),
+                //---- Phone form field ----//
+                CustomFormField(
+                  initialValue: _phone,
+                  labelName: 'Phone',
+                  prefixIcon: Icons.phone,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter a phone number';
+                    }
+                    if (!_validatePhone(value)) {
+                      return 'Please enter a valid 11-digit phone number';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => _phone = value!,
+                ),
+                const SizedBox(height: 16),
+                //---- Website form field ----//
+                CustomFormField(
+                  initialValue: _website,
+                  labelName: 'Website',
+                  prefixIcon: Icons.web,
+                  onSaved: (value) => _website = value!,
+                ),
+                const SizedBox(height: 20),
+                //---- Update or Add Button ----//
+                ElevatedButton(
+                  onPressed: _saveForm,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    elevation: 5,
+                  ),
+                  child: Text(
+                    widget.user == null ? 'Add User' : 'Update User',
+                    style: const TextStyle(
+                      color: Colors.deepPurple,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),
