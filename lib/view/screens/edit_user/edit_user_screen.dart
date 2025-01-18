@@ -59,63 +59,179 @@ class _AddOrUpdateUserScreenState extends State<AddOrUpdateUserScreen> {
     }
   }
 
+  // Email validation regex
+  bool _validateEmail(String email) {
+    final regex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return regex.hasMatch(email);
+  }
+
+  // Phone validation regex
+  bool _validatePhone(String phone) {
+    final regex = RegExp(r'^[0-9]{11}$');
+    return regex.hasMatch(phone);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.user == null ? 'Add User' : 'Edit User'),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.blueGrey, Colors.blueAccent, Colors.blue],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+        left: 16,
+        right: 16,
+        top: 16,
+      ),
+      child: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'User',
-                style: Theme.of(context).textTheme.titleMedium,
+                widget.user == null ? 'Add User' : 'Edit User',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
+              const SizedBox(height: 20),
               TextFormField(
                 initialValue: _name,
-                decoration: const InputDecoration(labelText: 'Name'),
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                  labelStyle: const TextStyle(color: Colors.white),
+                  prefixIcon: const Icon(Icons.person, color: Colors.white),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.2),
+                ),
+                style: const TextStyle(color: Colors.white),
                 validator: (value) =>
                     value!.isEmpty ? 'Please enter a name' : null,
                 onSaved: (value) => _name = value!,
               ),
+              const SizedBox(height: 16),
               TextFormField(
                 initialValue: _username,
-                decoration: const InputDecoration(labelText: 'Username'),
+                decoration: InputDecoration(
+                  labelText: 'Username',
+                  labelStyle: const TextStyle(color: Colors.white),
+                  prefixIcon:
+                      const Icon(Icons.person_outline, color: Colors.white),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.2),
+                ),
+                style: const TextStyle(color: Colors.white),
                 validator: (value) =>
                     value!.isEmpty ? 'Please enter a username' : null,
                 onSaved: (value) => _username = value!,
               ),
+              const SizedBox(height: 16),
               TextFormField(
                 initialValue: _email,
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter an email' : null,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  labelStyle: const TextStyle(color: Colors.white),
+                  prefixIcon: const Icon(Icons.email, color: Colors.white),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.2),
+                ),
+                style: const TextStyle(color: Colors.white),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter an email';
+                  }
+                  if (!_validateEmail(value)) {
+                    return 'Please enter a valid email';
+                  }
+                  return null;
+                },
                 onSaved: (value) => _email = value!,
               ),
+              const SizedBox(height: 16),
               TextFormField(
                 initialValue: _phone,
-                decoration: const InputDecoration(labelText: 'Phone'),
+                decoration: InputDecoration(
+                  labelText: 'Phone',
+                  labelStyle: const TextStyle(color: Colors.white),
+                  prefixIcon: const Icon(Icons.phone, color: Colors.white),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.2),
+                ),
+                style: const TextStyle(color: Colors.white),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter a phone number';
+                  }
+                  if (!_validatePhone(value)) {
+                    return 'Please enter a valid 11-digit phone number';
+                  }
+                  return null;
+                },
                 onSaved: (value) => _phone = value!,
               ),
+              const SizedBox(height: 16),
               TextFormField(
                 initialValue: _website,
-                decoration: const InputDecoration(labelText: 'Website'),
+                decoration: InputDecoration(
+                  labelText: 'Website',
+                  labelStyle: const TextStyle(color: Colors.white),
+                  prefixIcon: const Icon(Icons.web, color: Colors.white),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.2),
+                ),
+                style: const TextStyle(color: Colors.white),
                 onSaved: (value) => _website = value!,
               ),
               const SizedBox(height: 20),
-              Center(
-                child: ElevatedButton(
-                  onPressed: _saveForm,
-                  child: Text(widget.user == null ? 'Add User' : 'Update User'),
+              ElevatedButton(
+                onPressed: _saveForm,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  elevation: 5,
+                ),
+                child: Text(
+                  widget.user == null ? 'Add User' : 'Update User',
+                  style: const TextStyle(
+                    color: Colors.blue,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
