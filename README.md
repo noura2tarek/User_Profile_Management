@@ -5,7 +5,7 @@ A Flutter application for managing user profiles. This app allows you to:
 - Add new users.
 - Edit existing users.
 - Delete users.
-- Show profile page
+- Show profile screen of selected user.
 - Work offline with data persistence using SharedPreferences.
 
 
@@ -32,13 +32,13 @@ A Flutter application for managing user profiles. This app allows you to:
 6. **Validations**:
    - Input fields are validated for proper formatting.
 
-
+7.  **Url Launcher**:
+   - url launcher added for email and phone in profile screen.
 
 ## **Backges Used**
 - **Dio**: For making HTTP requests to the API.
 - **SharedPreferences**: For local data storage and offline support.
 - **MVC Architecture**: For clean and maintainable code structure.
 - **fluttertoast** : To show toast in success or fail
-- **cupertino_icons**
 
 
