@@ -76,7 +76,11 @@ class _AddOrUpdateUserScreenState extends State<AddOrUpdateUserScreen> {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.blueGrey, Colors.blueAccent, Colors.blue],
+          colors: [
+            Colors.purpleAccent,
+            Colors.deepPurpleAccent,
+            Colors.deepPurpleAccent
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -114,7 +118,7 @@ class _AddOrUpdateUserScreenState extends State<AddOrUpdateUserScreen> {
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
-                  fillColor: Colors.white.withOpacity(0.2),
+                  fillColor: Colors.white.withValues(alpha: 0.2),
                 ),
                 style: const TextStyle(color: Colors.white),
                 validator: (value) =>
@@ -134,7 +138,7 @@ class _AddOrUpdateUserScreenState extends State<AddOrUpdateUserScreen> {
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
-                  fillColor: Colors.white.withOpacity(0.2),
+                  fillColor: Colors.white.withValues(alpha: 0.2),
                 ),
                 style: const TextStyle(color: Colors.white),
                 validator: (value) =>
@@ -153,7 +157,7 @@ class _AddOrUpdateUserScreenState extends State<AddOrUpdateUserScreen> {
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
-                  fillColor: Colors.white.withOpacity(0.2),
+                  fillColor: Colors.white.withValues(alpha: .2),
                 ),
                 style: const TextStyle(color: Colors.white),
                 validator: (value) {
@@ -179,7 +183,7 @@ class _AddOrUpdateUserScreenState extends State<AddOrUpdateUserScreen> {
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
-                  fillColor: Colors.white.withOpacity(0.2),
+                  fillColor: Colors.white.withValues(alpha: .2),
                 ),
                 style: const TextStyle(color: Colors.white),
                 validator: (value) {
@@ -205,7 +209,7 @@ class _AddOrUpdateUserScreenState extends State<AddOrUpdateUserScreen> {
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
-                  fillColor: Colors.white.withOpacity(0.2),
+                  fillColor: Colors.white.withValues(alpha: .2),
                 ),
                 style: const TextStyle(color: Colors.white),
                 onSaved: (value) => _website = value!,
@@ -225,7 +229,7 @@ class _AddOrUpdateUserScreenState extends State<AddOrUpdateUserScreen> {
                 child: Text(
                   widget.user == null ? 'Add User' : 'Update User',
                   style: const TextStyle(
-                    color: Colors.blue,
+                    color: Colors.deepPurple,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),

@@ -4,21 +4,16 @@ import 'package:user_profile_management/controller/api_service.dart';
 import 'package:user_profile_management/model/user_model.dart';
 import 'package:user_profile_management/view/widgets/custom_list_tile.dart';
 
-class UserScreen extends StatefulWidget {
-  const UserScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<UserScreen> createState() => _UserScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-
-
-  
 class _HomeScreenState extends State<HomeScreen> {
   List<User> users = [];
   bool isLoading = true;
-    final UserController _userController = UserController();
-
 
   /*----------Get Users Data from API ----------*/
   Future<void> getData() async {
@@ -33,11 +28,12 @@ class _HomeScreenState extends State<HomeScreen> {
     getData();
     super.initState();
   }
+
   void _addUser(User user) async {
     try {
-      await _api.addUser(user.toJson());
+      await ApiService().addUser(user.toJson());
       setState(() {
-        _users.add(user);
+        users.add(user);
       });
     } catch (e) {
       print('Failed to add user: $e');
@@ -46,27 +42,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _updateUser(User user) async {
     try {
-      await _api.updateUser(user.id, user.toJson());
+      await ApiService().updateUser(user.id, user.toJson());
       setState(() {
-        final index = _users.indexWhere((u) => u.id == user.id);
-        _users[index] = user;
+        final index = users.indexWhere((u) => u.id == user.id);
+        users[index] = user;
       });
     } catch (e) {
       print('Failed to update user: $e');
     }
   }
 
-  void _deleteUser(int id) async {
-    try {
-      await _api.deleteUser(id);
-      setState(() {
-        _users.removeWhere((user) => user.id == id);
-      });
-    } catch (e) {
-      print('Failed to delete user: $e');
-    }
-  }
-   void _navigateToAddOrUpdateUserScreen({User? user}) async {
+  void _navigateToAddOrUpdateUserScreen({User? user}) async {
     final formResult = await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -87,17 +73,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (formResult != null && formResult is Map<String, dynamic>) {
       if (formResult['action'] == 'add') {
-        await _userController.addUser(formResult['user']);
+        _addUser(formResult['user']);
       } else if (formResult['action'] == 'edit') {
-        await _userController.updateUser(formResult['user']);
+        _updateUser(formResult['user']);
       }
       setState(() {});
     }
+  }
 
   @override
- 
   Widget build(BuildContext context) {
-
     const Color myColor = Color.fromARGB(255, 152, 70, 155);
     return Scaffold(
       appBar: AppBar(
@@ -123,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                       onDismissed: (direction) {
                         // Confirm Delete user method
-                        // Add delete service method here //
+                        ApiService().deleteUser(user.id);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text("${users[index].name} deleted"),
@@ -154,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           user: user,
                           color: myColor,
                           onTabEdit: () {
-                            // Handle Edit or go to edit screen
+                            _navigateToAddOrUpdateUserScreen(user: user);
                           },
                           onTab: () {
                             // Go to profile screen
@@ -166,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navigate to add user screen
+          _navigateToAddOrUpdateUserScreen();
         },
         child: Icon(Icons.add),
       ),
