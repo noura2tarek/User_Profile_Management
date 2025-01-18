@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:user_profile_management/view/screens/edit_user/edit_user_screen.dart';
 import 'package:user_profile_management/controller/api_service.dart';
 import 'package:user_profile_management/model/user_model.dart';
@@ -14,15 +18,50 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<User> users = [];
-  bool isLoading = true;
+  bool isLoading = false;
 
-  /*----------Get Users Data from API ----------*/
-  Future<void> _getData() async {
-    users = await ApiService().getUsersData();
-    setState(() {
-      isLoading = false;
-    });
+  /*---------- Get Users Data from Cache ----------*/
+  Future<List<User>> _getUsersDataFromCache() async {
+    // try to load data from shared preferences
+    List<User> cachedUsers = [];
+    final prefs = await SharedPreferences.getInstance();
+    String data = prefs.getString('usersData') ?? '';
+    if (data.isEmpty) {
+      // data hasn't been saved in shared preferences yet
+      log('no data found in cache');
+      return cachedUsers;
+    } else {
+      log('There is data in cache');
+      // Convert string to json
+      var jsonData = jsonDecode(data);
+      jsonData.forEach((item) {
+        cachedUsers.add(User.fromJson(item));
+      });
+      return cachedUsers;
+    }
   }
+
+  /*---------- Get Users Data from API ----------*/
+  Future<void> _getData() async {
+    setState(() {
+      isLoading = true;
+    });
+    List<User> cachedUsers = await _getUsersDataFromCache();
+    if (cachedUsers.isNotEmpty) {
+      // If data found in shared preferences
+      setState(() {
+        users = cachedUsers;
+        isLoading = false;
+      });
+    } else {
+      List<User> apiUsers = await ApiService().getUsersData();
+      setState(() {
+        users = apiUsers;
+        isLoading = false;
+      });
+    }
+  }
+
 
   /*---------- Add User method ----------*/
   void _addUser(User user) async {

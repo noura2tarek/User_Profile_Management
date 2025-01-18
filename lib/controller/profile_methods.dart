@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -24,10 +26,22 @@ abstract class ProfileMethods {
 
   static launchEmail(
       {required String email, required BuildContext context}) async {
-    final Uri url = Uri.parse('mailto:$email');
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
+    const subject = 'Hello';
+    const body = 'Test';
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: email,
+      queryParameters: {
+        'subject': subject,
+        'body': body,
+      },
+    );
+
+    final url = emailLaunchUri.toString();
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
     } else {
+      log('Could not launch $url');
       showSnackBar(context: context, text: "Can't launch email");
     }
   }
