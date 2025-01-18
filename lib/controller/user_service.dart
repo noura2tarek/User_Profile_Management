@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,6 @@ import 'package:user_profile_management/model/user_model.dart';
 class ApiService {
   final Dio _dio = Dio();
 
-
   // End point url
   String url = 'https://jsonplaceholder.typicode.com/users';
   /*-------------- Add User Data Method ------------*/
@@ -16,19 +14,16 @@ class ApiService {
   Future<Response> addUser(Map<String, dynamic> data) async {
     return await _dio.post(url, data: data);
   }
-
   /*-------------- Update User Data Method ------------*/
 
   Future<Response> updateUser(int id, Map<String, dynamic> data) async {
     return await _dio.put('$url/$id', data: data);
   }
-
   /*-------------- Delete User Data Method ------------*/
 
   Future<Response> deleteUser(int id) async {
     return await _dio.delete('$url/$id');
   }
-
 
   /*-------------- Get User Data Method ------------*/
   Future<List<User>> getUsersData() async {
