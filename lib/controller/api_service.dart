@@ -13,19 +13,16 @@ class ApiService {
   String url = 'https://jsonplaceholder.typicode.com/users';
 
   /*-------------- Add User Data Method ------------*/
-
   Future<Response> addUser(Map<String, dynamic> data) async {
     return await _dio.post(url, data: data);
   }
 
   /*-------------- Update User Data Method ------------*/
-
   Future<Response> updateUser(int id, Map<String, dynamic> data) async {
     return await _dio.put('$url/$id', data: data);
   }
 
   /*-------------- Delete User Data Method ------------*/
-
   Future<Response> deleteUser(int id) async {
     return await _dio.delete('$url/$id');
   }
