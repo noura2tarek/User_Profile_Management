@@ -10,11 +10,14 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const Color myColor = Color.fromARGB(255, 152, 70, 155);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("User Profile"),
+        backgroundColor: myColor,
+        foregroundColor: Colors.white,
       ),
-
       body: SafeArea(
         minimum: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         child: SingleChildScrollView(
@@ -37,19 +40,21 @@ class ProfileScreen extends StatelessWidget {
                 title: 'email',
                 subtitle: user.email,
                 iconData: Icons.mail,
-                onTap: ()=> ProfileMethods.launchEmail(email: user.email, context: context),
+                onTap: () => ProfileMethods.launchEmail(
+                    email: user.email, context: context),
               ),
               PersonInfoTitle(
-                title: 'Phone',
-                subtitle: user.phone,
-                iconData: Icons.phone,
-                onTap: ()=> ProfileMethods.callUserPhone(phoneNumber: user.phone, context: context)
-              ),
+                  title: 'Phone',
+                  subtitle: user.phone,
+                  iconData: Icons.phone,
+                  onTap: () => ProfileMethods.callUserPhone(
+                      phoneNumber: user.phone, context: context)),
               PersonInfoTitle(
                 title: 'Website',
                 subtitle: user.website,
                 iconData: Icons.language,
-                onTap: ()=> ProfileMethods.launchWebsite(websiteLink: user.website, context: context),
+                onTap: () => ProfileMethods.launchWebsite(
+                    websiteLink: user.website, context: context),
               ),
             ],
           ),
