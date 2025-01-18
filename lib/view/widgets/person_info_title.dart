@@ -5,7 +5,14 @@ class PersonInfoTitle extends StatelessWidget {
   final String subtitle;
   final IconData iconData;
   final Function()? onTap;
-  const PersonInfoTitle({super.key, required this.title, required this.subtitle, required this.iconData, this.onTap});
+
+  const PersonInfoTitle(
+      {super.key,
+      required this.title,
+      required this.subtitle,
+      required this.iconData,
+      this.onTap,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +24,18 @@ class PersonInfoTitle extends StatelessWidget {
       ),
       child: ListTile(
         onTap: onTap,
-        trailing: onTap == null ? null : OutlinedButton(onPressed: onTap, child: Text('Launch')),
+        trailing: onTap == null
+            ? null
+            : OutlinedButton(onPressed: onTap, child: Text('Launch')),
         leading: Icon(iconData),
-        title: Text(title,style: TextStyle(fontSize: 16),),
-        subtitle: Text(subtitle,style: TextStyle(fontSize: 14),),
+        title: Text(
+          title,
+          style: TextStyle(fontSize: 16),
+        ),
+        subtitle: Text(
+          subtitle,
+          style: TextStyle(fontSize: 14),
+        ),
       ),
     );
   }
