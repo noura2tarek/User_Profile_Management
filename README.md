@@ -38,8 +38,10 @@ A Flutter application for managing user profiles. This app allows you to:
 ## **Packages Used**
 - **Dio**: For making HTTP requests to the API ==> https://pub.dev/packages/dio.
 - **SharedPreferences**: For local data storage and offline support ==> https://pub.dev/packages/shared_preferences.
-- **MVC Architecture**: For clean and maintainable code structure.
 - **fluttertoast** : To show toast in success or fail ==> https://pub.dev/packages/fluttertoast.
 - **url_launcher** : For launching a URL (Email or phone) ==> https://pub.dev/packages/url_launcher.
+- **MVC Architecture**: For clean and maintainable code structure.
+
+  
 
 
