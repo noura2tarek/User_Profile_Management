@@ -35,7 +35,7 @@ A Flutter application for managing user profiles. This app allows you to:
 7.  **Url Launcher**:
    - url launcher added for email and phone in profile screen.
 
-## **Backges Used**
+## **Packages Used**
 - **Dio**: For making HTTP requests to the API ==> https://pub.dev/packages/dio.
 - **SharedPreferences**: For local data storage and offline support ==> https://pub.dev/packages/shared_preferences.
 - **MVC Architecture**: For clean and maintainable code structure.
