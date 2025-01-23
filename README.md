@@ -13,7 +13,7 @@ A Flutter application for managing user profiles. This app allows you to:
 ## **Features**
 1. **HomeScreen**:
    - View a list of users with their name, email, and profile picture.
-   - Pull-to-refresh to reload the list.
+   - Pull-to-refresh to reload the list. 
 
 2. **Add/Edit User**:
    - Add a new user with details like name, username, email, phone, and website.
