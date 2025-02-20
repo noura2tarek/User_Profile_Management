@@ -27,11 +27,15 @@ class ProfileScreen extends StatelessWidget {
               Icon(Icons.account_circle,
                   size: MediaQuery.sizeOf(context).width * 0.4),
               PersonInfoTitle(
-                  title: 'ID',
-                  subtitle: user.id.toString(),
-                  iconData: Icons.numbers),
+                title: 'ID',
+                subtitle: user.id.toString(),
+                iconData: Icons.numbers,
+              ),
               PersonInfoTitle(
-                  title: 'Name', subtitle: user.name, iconData: Icons.person),
+                title: 'Name',
+                subtitle: user.name,
+                iconData: Icons.person,
+              ),
               PersonInfoTitle(
                   title: 'Username',
                   subtitle: user.username,

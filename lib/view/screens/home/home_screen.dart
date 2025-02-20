@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
         users.add(user);
       });
     } catch (e) {
-      print('Failed to add user: $e');
+      log('Failed to add user: $e');
     }
   }
 
