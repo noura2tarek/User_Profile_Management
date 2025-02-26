@@ -39,6 +39,15 @@ This app allows you to:
 
 ---------------------------------------
 
+## App Structure
+The code is organized using **MVC Architecture** for clean and maintainable code structure.                   
+The main folders in lib are:
+- **controller**: contains controllers which deal with presentaion layer to handle logic (api_service and profile controller).
+- **model**: define the data models (user model).
+- **view**: UI design and components (screens and widgets).
+
+--------------------------------------------
+
 ## How to Run
 
 1. Clone the repository.
