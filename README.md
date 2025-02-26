@@ -1,6 +1,8 @@
 # **User Profile Management**
 
-A Flutter application for managing user profiles. This app allows you to:
+# Description
+A Flutter application for managing user profiles.                                
+This app allows you to:                    
 - View a list of users.
 - Add new users.
 - Edit existing users.
@@ -8,7 +10,7 @@ A Flutter application for managing user profiles. This app allows you to:
 - Show profile screen of selected user.
 - Work offline with data persistence using SharedPreferences.
 
-
+-----------------
 
 ## **Features**
 1. **HomeScreen**:
@@ -34,6 +36,16 @@ A Flutter application for managing user profiles. This app allows you to:
 
 7.  **Url Launcher**:
    - url launcher added for email and phone in profile screen.
+
+---------------------------------------
+
+## How to Run
+
+1. Clone the repository.
+2. Run `flutter pub get` to install dependencies.
+3. Run `flutter run` to start the app.
+
+----------------------------
 
 ## **Packages Used**
 - **Dio**: For making HTTP requests to the API ==> https://pub.dev/packages/dio.
